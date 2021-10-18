@@ -36,17 +36,53 @@ cleanup:
 
 
 modules:
+  - name: faudio32
+    buildsystem: cmake-ninja
+    build-options:
+      prepend-pkg-config-path: /app/lib32/pkgconfig:/usr/lib/i386-linux-gnu/pkgconfig
+      prefix: /app/wine
+      ldflags: -L/app/lib32
+      prepend-path: /usr/lib/sdk/toolchain-i386/bin
+      env:
+        CC: i686-unknown-linux-gnu-gcc
+        CXX: i686-unknown-linux-gnu-g++
+      libdir: /app/wine/lib32
+      strip: true
+      no-debuginfo: true
+    config-opts:
+      - -DGSTREAMER=ON
+    sources:
+      - type: archive
+        url: https://github.com/FNA-XNA/FAudio/archive/20.12.tar.gz
+        sha256: d5a1656ec79cd2878dddabc07d7f7848c11844595c76033aed929b10d922c009
+
+  - name: faudio64
+    buildsystem: cmake-ninja
+    build-options:
+      prefix: /app/wine
+      libdir: /app/wine/lib
+      strip: true
+      no-debuginfo: true
+    config-opts:
+      - -DGSTREAMER=ON
+    sources:
+      - type: archive
+        url: https://github.com/FNA-XNA/FAudio/archive/20.12.tar.gz
+        sha256: d5a1656ec79cd2878dddabc07d7f7848c11844595c76033aed929b10d922c009
+
   - name: wine
     build-options:
       config-opts:
         - --enable-win64
       libdir: /app/wine/lib
+      ldflags: -L/app/wine/lib
     config-opts: &wine-config-opts
       - --disable-win16
       - --without-ldap
       - --without-cups
       - --without-gphoto
       - --without-gsm
+      - --with-faudio
     make-install-args: &wine-make-install-args
       - LDCONFIG=/bin/true
       - UPDATE_DESKTOP_DATABASE=/bin/true
@@ -62,6 +98,8 @@ modules:
   - name: wine-32bit
     build-options:
       libdir: /app/wine/lib32
+      ldflags: -L/app/wine/lib32 -L/app/lib32 -Wl,-z,relro,-z,now -Wl,--as-needed
+      ldflags-override: true
       env:
         CC: i686-unknown-linux-gnu-gcc
         CXX: i686-unknown-linux-gnu-g++
