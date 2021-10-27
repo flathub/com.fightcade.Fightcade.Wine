@@ -1,6 +1,6 @@
 id: com.fightcade.Fightcade.Wine
 runtime: com.fightcade.Fightcade
-runtime-version: stable
+runtime-version: beta
 sdk: org.freedesktop.Sdk//21.08
 sdk-extensions:
   - org.freedesktop.Sdk.Compat.i386
