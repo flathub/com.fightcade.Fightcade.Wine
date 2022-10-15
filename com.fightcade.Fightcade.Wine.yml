@@ -54,11 +54,8 @@ modules:
       - INSTALL_PROGRAM_FLAGS=-s
     sources: &wine-sources
       - type: archive
-        url: https://dl.winehq.org/wine/source/5.0/wine-5.0.2.tar.xz
-        sha256: c2c284f470874b35228327c3972bc29c3a9d8d98abd71dbf81c288b8642becbc
-      - type: patch
-        paths:
-          - patches/wine/0001-msvcrt-Add-sincos-to-importlib.patch
+        url: https://dl.winehq.org/wine/source/7.0/wine-7.0.tar.xz
+        sha256: 5b43e27d5c085cb18f97394e46180310d5eef7c1d91c6895432a3889b2de086b
 
   - name: wine-32bit
     build-options:
